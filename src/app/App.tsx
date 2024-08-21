@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
 import {Menu} from '@mui/icons-material';
 import {ErrorSnackbar} from '../components/ErrorSnackbar/ErrorSnackbar'
-import {Route, Routes} from "react-router-dom";
+import {Outlet, Route, Routes} from "react-router-dom";
 import {Login} from "../components/Login/Login";
 
 
@@ -34,10 +34,12 @@ function App() {
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <Routes>
-                    <Route path={'/'} element={<TodolistsList/>}/>
-                    <Route path={'login'} element={<Login/>}/>
-                </Routes>
+                <Outlet/>
+                {/*<Routes>*/}
+                {/*    <Route path={'/'} element={<TodolistsList/>}/>*/}
+                {/*    <Route path={'login'} element={<Login/>}/>*/}
+                {/*    <Route path="*" element={'404'} />*/}
+                {/*</Routes>*/}
             </Container>
         </div>
     )
