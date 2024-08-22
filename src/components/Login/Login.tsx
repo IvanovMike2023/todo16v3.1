@@ -29,16 +29,16 @@ export const Login = () => {
             } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
                 errors.email = 'Invalid email address';
             }
-            if(!values.password){
-                errors.password='Required'
-            }else if(values.password.length<6){
-                errors.email = 'Invalid cscacas';
+            if (!values.password) {
+                errors.password = 'Required'
+            } else if (values.password.length < 6) {
+                errors.password = 'Invalid password';
             }
             return errors
         }
     });
 
-    console.log(formik.values.password.length)
+    console.log(formik.errors)
     return (
         <form onSubmit={formik.handleSubmit}>
             <Grid container justifyContent={'center'}>
@@ -47,12 +47,13 @@ export const Login = () => {
                         <FormGroup>
                             <TextField name="email" label="Email" margin="normal" onChange={formik.handleChange}
                                        value={formik.values.email}/>
-                            {formik.errors.email ? <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
+                            {formik.touched.email && formik.errors.email ?
+                               ( <div style={{color: 'red'}}>{formik.errors.email}</div>) : null}
                             <TextField name="password" type="password" label="password" margin="normal"
                                        onChange={formik.handleChange}
                                        value={formik.values.password}/>
-                            {formik.errors.password ? <div style={{color: 'red'}}>{formik.errors.password}</div> : null}
-
+                            {formik.touched.password && formik.errors.password ?
+                                (<div style={{color: 'red'}}>{formik.errors.password}</div>) : null}
                             <FormControlLabel label={'Remember me'} control={<Checkbox/>}/>
                             <Button type={'submit'} variant={'contained'} color={'primary'}>
                                 Login
