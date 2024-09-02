@@ -11,13 +11,24 @@ const instance = axios.create({
 
 // api
 export const AuthAPI = {
-    AuthMe(data:AuthType) {
-        return instance.post<ResponseType<{ userId: number }>, AxiosResponse<ResponseType<{ userId: number }>,AuthType>>(`auth/login`, data);
+    AuthMe(data:LoginType) {
+        return instance.post<ResponseType<{ userId: number }>, AxiosResponse<ResponseType<{ userId: number }>,LoginType>>(`auth/login`, data);
+    },
+    me() {
+        return instance.get<ResponseType <UserType>>(`auth/me`);
+    },
+    logout() {
+        return instance.delete<ResponseType>(`auth/login`);
     }
 }
 
-// types
-export type AuthType = {
+// types authAPI
+type UserType={
+    id: number
+    email: string
+    login: string
+}
+export type LoginType = {
     email: string
     password: string
     rememberMe: boolean

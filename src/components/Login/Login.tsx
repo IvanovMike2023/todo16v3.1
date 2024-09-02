@@ -10,7 +10,8 @@ import Button from '@mui/material/Button'
 import {useFormik} from "formik";
 import {AuthAPI} from "../../api/auth-api";
 import {loginTC} from "./auth-reducer";
-import {useAppDispatch} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../app/store";
+import {Navigate} from "react-router-dom";
 
 type ErrorsType = {
     email?: string
@@ -33,6 +34,7 @@ const validate = (values: ErrorsType) => {
 }
 export const Login = () => {
     const dispatch = useAppDispatch()
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -45,6 +47,9 @@ export const Login = () => {
         },
         validate
     });
+    if (isLoggedIn) {
+        return <Navigate to={'/'}/>
+    }
     return (
         <form onSubmit={formik.handleSubmit}>
             <Grid container justifyContent={'center'}>

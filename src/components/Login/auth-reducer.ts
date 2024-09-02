@@ -1,12 +1,12 @@
 import {Dispatch} from 'redux'
 import {
     SetAppErrorActionType,
+    setAppInitializedAC, SetAppInitializedType,
     setAppStatusAC,
     SetAppStatusActionType,
 } from '../../app/app-reducer'
-import {AuthAPI, AuthType} from "../../api/auth-api";
+import {AuthAPI, LoginType} from "../../api/auth-api";
 import {handleServerAppError, handleServerNetworkError} from "../../utils/error-utils";
-import {addTaskAC} from "../../features/TodolistsList/tasks-reducer";
 
 const initialState = {
     isLoggedIn: false,
@@ -31,7 +31,7 @@ export const setIsLoggedInAC = (value: boolean) =>
     ({type: 'login/SET-IS-LOGGED-IN', value}) as const
 
 // thunks
-export const loginTC = (data: AuthType) => async (dispatch: Dispatch<ActionsType>) => {
+export const loginTC = (data: LoginType) => async (dispatch: Dispatch<ActionsType>) => {
     dispatch(setAppStatusAC('loading'))
     try {
         const res = await AuthAPI.AuthMe(data)
@@ -45,9 +45,41 @@ export const loginTC = (data: AuthType) => async (dispatch: Dispatch<ActionsType
         handleServerNetworkError(error as ErrorType, dispatch)
     }
 }
+export const meTC = () => {
+    return async (dispatch: Dispatch<ActionsType>) => {
+        dispatch(setAppStatusAC('loading'))
+        try {
+            const res = await AuthAPI.me()
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoggedInAC(true))
+                dispatch(setAppStatusAC('succeeded'))
+            } else {
+                handleServerAppError(res.data, dispatch)
+            }
+        } catch (error) {
+            handleServerNetworkError(error as ErrorType, dispatch)
+        } finally {
+            dispatch(setAppInitializedAC(true))
+        }
 
-// types
+    };
+}
+export const logoutTC = () => async (dispatch: Dispatch<ActionsType>) => {
+    dispatch(setAppStatusAC('loading'))
+    try {
+        const res = await AuthAPI.logout()
+        if (res.data.resultCode === 0) {
+            dispatch(setIsLoggedInAC(false))
+            dispatch(setAppStatusAC('succeeded'))
+        } else {
+            handleServerAppError(res.data, dispatch)
+        }
+    } catch (error) {
+        handleServerNetworkError(error as ErrorType, dispatch)
+    }
+}
 type ActionsType =
     | ReturnType<typeof setIsLoggedInAC>
     | SetAppStatusActionType
     | SetAppErrorActionType
+    | SetAppInitializedType
