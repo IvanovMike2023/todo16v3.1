@@ -47,7 +47,6 @@ function App() {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
                     { isLoggedIn && <Button onClick={Logout} color="inherit">Logout</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
