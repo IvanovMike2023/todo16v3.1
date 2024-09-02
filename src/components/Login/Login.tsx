@@ -9,11 +9,14 @@ import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import {useFormik} from "formik";
 import {AuthAPI} from "../../api/auth-api";
+import {loginTC} from "./auth-reducer";
+import {useAppDispatch} from "../../app/store";
 
 type ErrorsType = {
     email?: string
     password?: string
 }
+
 const validate = (values: ErrorsType) => {
     const errors: ErrorsType = {};
     if (!values.email) {
@@ -29,6 +32,7 @@ const validate = (values: ErrorsType) => {
     return errors
 }
 export const Login = () => {
+    const dispatch = useAppDispatch()
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -36,15 +40,11 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: values => {
-            AuthAPI.AuthMe(values.email,values.password,values.rememberMe).then(res=>{
-                console.log(res)
-            })
-            formik.resetForm({values:{ email: '', password: '' ,rememberMe: false}});
+            dispatch(loginTC(values))
+            formik.resetForm({values: {email: '', password: '', rememberMe: false}});
         },
         validate
     });
-
-    console.log(formik.values)
     return (
         <form onSubmit={formik.handleSubmit}>
             <Grid container justifyContent={'center'}>
@@ -58,7 +58,8 @@ export const Login = () => {
                                        margin="normal" {...formik.getFieldProps('password')}/>
                             {formik.touched.password && formik.errors.password ?
                                 (<div style={{color: 'red'}}>{formik.errors.password}</div>) : null}
-                            <FormControlLabel  label={'rememberMe'} {...formik.getFieldProps('rememberMe')} control={<Checkbox />}/>
+                            <FormControlLabel label={'rememberMe'}
+                                              control={<Checkbox {...formik.getFieldProps('rememberMe')} />}/>
                             <Button type={'submit'} variant={'contained'} color={'primary'}>
                                 Login
                             </Button>
