@@ -293,204 +293,220 @@
 
 // 🖥 Пример ответа: <Route path={'/'} element={'to profile page'}/>
 ///-----
-import React, { useEffect } from "react";
-import { Provider, TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import axios from "axios";
-import { configureStore, combineReducers } from "@reduxjs/toolkit";
-
-// Utils
-console.log = () => {};
-
-// Api
-const instance = axios.create({
-    baseURL: "xxx",
-});
-
-const api = {
-    getUsers() {
-        return instance.get("xxx");
-    },
-};
-
-// Reducer
-const initState = {
-    isLoading: false,
-    users: [] as any[],
-};
-
-type InitStateType = typeof initState;
-
-const appReducer = (state: InitStateType = initState, action: ActionsType): InitStateType => {
-    switch (action.type) {
-        case "APP/SET-USERS":
-            /* 1 */
-            return { ...state, users: action.users };
-        case "APP/IS-LOADING":
-            /* 2 */
-            return { ...state, isLoading: action.isLoading };
-        default:
-            return state;
-    }
-};
-
-// Actions
-const setUsersAC = (users: any[]) => ({ type: "APP/SET-USERS", users }) as const;
-const setLoadingAC = (isLoading: boolean) => ({ type: "APP/IS-LOADING", isLoading }) as const;
-type ActionsType = ReturnType<typeof setUsersAC> | ReturnType<typeof setLoadingAC>;
-
-// Thunk
-const getUsersTC = (): AppThunk => (dispatch) => {
-    /* 3 */
-    console.log('3')
-    dispatch(setLoadingAC(true));
-    api.getUsers().then((res) => {
-        /* 4 */
-        dispatch(setLoadingAC(false));
-        /* 5 */
-        dispatch(setUsersAC(res.data.data));
-    });
-};
-
-// Store
-const rootReducer = combineReducers({
-    app: appReducer,
-});
-
-const store = configureStore({ reducer: rootReducer });
-type RootState = ReturnType<typeof store.getState>;
-type AppDispatch = ThunkDispatch<RootState, unknown, ActionsType>;
-type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, ActionsType>;
-const useAppDispatch = () => useDispatch<AppDispatch>();
-const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
-
-// Loader
-export const Loader = () => {
-    /* 6 */
-    return <h1>Loading ...</h1>;
-};
-
-// Login
-export const Login = () => {
-    /* 7 */
-    const users = useAppSelector((state) => state.app.users);
-    const isLoading = useAppSelector((state) => state.app.isLoading);
-
-    return (
-        <div>
-            {isLoading && <Loader />}
-            {users.map((u) => (
-                <p key={u.id}>{u.email}</p>
-            ))}
-            <h1>
-                В данном задании на экран смотреть не нужно. Рекомендуем взять ручку, листик и
-                последовательно, спокойно расставить цифры в нужном порядке. Прежде чем давать ответ
-                обязательно посчитайте к-во цифр и сверьте с подсказкой. Удачи 🚀
-            </h1>
-        </div>
-    );
-};
-
-// App
-export const App = () => {
-    /* 8 */
-    const dispatch = useAppDispatch();
-
-    useEffect(() => {
-        /* 9 */
-        dispatch(getUsersTC());
-    }, []);
-
-    /* 10 */
-    return (
-        <Routes>
-            <Route path={""} element={<Login />} />
-        </Routes>
-    );
-};
-
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
-root.render(
-    <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>,
-);
-
+// import React, { useEffect } from "react";
+// import { Provider, TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+// import ReactDOM from "react-dom/client";
+// import { BrowserRouter, Route, Routes } from "react-router-dom";
+// import { ThunkAction, ThunkDispatch } from "redux-thunk";
+// import axios from "axios";
+// import { configureStore, combineReducers } from "@reduxjs/toolkit";
+// import {GetTasksResponse, ResponseType} from "./api/todolists-api";
+// const instance = axios.create({
+//     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+//     withCredentials: true,
+//     headers: {
+//         'API-KEY': 'a2bc24bd-0a71-4fa5-ad1c-5b343082cdb6'
+//     }
+// })
+// // Utils
+//
+// // Api
+// // const instance = axios.create({
+// //     baseURL: "xxx",
+// // });
+//
+// const api = {
+//     getUsers() {
+//         return instance.get<GetTasksResponse>(`todo-lists/70530da6-46fa-4c86-9620-0698621c0cda/tasks`)
+//     },
+// };
+//
+// // Reducer
+// const initState = {
+//     isLoading: false,
+//     users: [] as any[],
+// };
+//
+// type InitStateType = typeof initState;
+//
+// const appReducer = (state: InitStateType = initState, action: ActionsType): InitStateType => {
+//     switch (action.type) {
+//         case "APP/SET-USERS":
+//             /* 1 */
+//             console.log(1)
+//             return { ...state, users: action.users };
+//         case "APP/IS-LOADING":
+//             /* 2 */
+//             console.log(2)
+//             return { ...state, isLoading: action.isLoading };
+//         default:
+//             return state;
+//     }
+// };
+//
+// // Actions
+// const setUsersAC = (users: any[]) => ({ type: "APP/SET-USERS", users }) as const;
+// const setLoadingAC = (isLoading: boolean) => ({ type: "APP/IS-LOADING", isLoading }) as const;
+// type ActionsType = ReturnType<typeof setUsersAC> | ReturnType<typeof setLoadingAC>;
+//
+// // Thunk
+// const getUsersTC = (): AppThunk => (dispatch) => {
+//     /* 3 */
+//     console.log('3')
+//     dispatch(setLoadingAC(true));
+//     api.getUsers().then((res) => {
+//         /* 4 */
+//         console.log(4)
+//         dispatch(setLoadingAC(false));
+//         /* 5 */
+//         console.log(5)
+//         dispatch(setUsersAC(res.data.items));
+//     });
+// };
+//
+// // Store
+// const rootReducer = combineReducers({
+//     app: appReducer,
+// });
+//
+// const store = configureStore({ reducer: rootReducer });
+// type RootState = ReturnType<typeof store.getState>;
+// type AppDispatch = ThunkDispatch<RootState, unknown, ActionsType>;
+// type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, ActionsType>;
+// const useAppDispatch = () => useDispatch<AppDispatch>();
+// const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+//
+// // Loader
+// export const Loader = () => {
+//     /* 6 */
+//     console.log(6)
+//     return <h1>Loading ...</h1>;
+// };
+//
+// // Login
+// export const Login = () => {
+//     /* 7 */
+//     console.log(7)
+//     const users = useAppSelector((state) => state.app.users);
+//     const isLoading = useAppSelector((state) => state.app.isLoading);
+//
+//     return (
+//         <div>
+//             {isLoading && <Loader />}
+//             {users.map((u) => (
+//                 <p key={u.id}>{u.email}</p>
+//             ))}
+//             <h1>
+//                 В данном задании на экран смотреть не нужно. Рекомендуем взять ручку, листик и
+//                 последовательно, спокойно расставить цифры в нужном порядке. Прежде чем давать ответ
+//                 обязательно посчитайте к-во цифр и сверьте с подсказкой. Удачи 🚀
+//             </h1>
+//         </div>
+//     );
+// };
+//
+// // App
+// export const App = () => {
+//     /* 8 */
+//     console.log(8)
+//     const dispatch = useAppDispatch();
+//
+//     useEffect(() => {
+//         /* 9 */
+//         console.log(9)
+//         dispatch(getUsersTC());
+//     }, []);
+//
+//     /* 10 */
+//     console.log(10)
+//     return (
+//         <Routes>
+//             <Route path={""} element={<Login />} />
+//         </Routes>
+//     );
+// };
+//
+// const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+// root.render(
+//     <Provider store={store}>
+//         <BrowserRouter>
+//             <App />
+//         </BrowserRouter>
+//     </Provider>,
+// );
+//8 10 7 9 3 2 7 6 4 2 5 1 7
 // 📜 Описание:
 // Задача: напишите в какой последовательности вызовутся числа при успешном запросе.
 // Подсказка: будет 13 чисел.
 // Ответ дайте через пробел.
 
 // 🖥 Пример ответа: 1 2 3 4 5 6 7 8 9 10 1 2 3
-// import { useFormik } from 'formik';
-// import React from 'react'
-// import ReactDOM from 'react-dom/client';
-// import { BrowserRouter, Route, Routes } from 'react-router-dom'
-//
-//
-// // Types
-// type LoginFieldsType = {
-//     firstName: string
-//     email: string
-// }
-//
-// // Main
-// export const Login = () => {
-//
-//     const formik = useFormik({
-//         initialValues: {
-//             firstName: '',
-//             email: '',
-//         },
-//         validate: (values) => {
-//             const errors: Partial<LoginFieldsType> = {};
-//
-//             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-//                 errors.email = 'Invalid email address';
-//             }
-//             return errors
-//         },
-//         onSubmit: values => {
-//             alert(JSON.stringify(values, null, 2));
-//         }
-//     });
-//
-//     // Функция необходима для того, чтобы вебшторм не ругался на true в JSX
-//     const getTrue = () => {
-//         return true
-//     }
-//     if(!formik.errors){
-//         console.log('ssss')
-//     }
-//     return (
-//         <form onSubmit={formik.handleSubmit}>
-//             <div>
-//                 <input placeholder={'Введите имя'} {...formik.getFieldProps('firstName')}/>
-//             </div>
-//             <div>
-//                 <input placeholder={'Введите email'}{...formik.getFieldProps('email')}/>
-//                 {getTrue() &&  <div style={{color: 'red'}}>{formik.errors.email}</div>}
-//             </div>
-//             <button type="submit">Отправить</button>
-//         </form>
-//     );
-// }
-//
-// // App
-// export const App = () => {
-//     return (
-//         <Routes>
-//             <Route path={''} element={<Login/>}/>
-//         </Routes>
-//     )
-// }
-//
-// const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-// root.render(<BrowserRouter><App/></BrowserRouter>)
+import { useFormik } from 'formik';
+import React from 'react'
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+
+
+// Types
+type LoginFieldsType = {
+    firstName: string
+    email: string
+}
+
+// Main
+export const Login = () => {
+
+    const formik = useFormik({
+        initialValues: {
+            firstName: '',
+            email: '',
+        },
+        validate: (values) => {
+            const errors: Partial<LoginFieldsType> = {};
+
+            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+                errors.email = 'Invalid email address';
+            }
+            return errors
+        },
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2));
+        }
+    });
+
+    // Функция необходима для того, чтобы вебшторм не ругался на true в JSX
+    const getTrue = () => {
+        return true
+    }
+    if(formik.errors){
+        console.log(formik.errors)
+        console.log(formik.touched.email)
+    }
+    return (
+        <form onSubmit={formik.handleSubmit}>
+            <div>
+                <input placeholder={'Введите имя'} {...formik.getFieldProps('firstName')}/>
+            </div>
+            <div>
+                <input placeholder={'Введите email'}{...formik.getFieldProps('email')}/>
+                {getTrue() && formik.touched.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+            </div>
+            <button type="submit">Отправить</button>
+        </form>
+    );
+}
+
+// App
+export const App = () => {
+    return (
+        <Routes>
+            <Route path={''} element={<Login/>}/>
+        </Routes>
+    )
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+root.render(<BrowserRouter><App/></BrowserRouter>)
 
 // 📜 Описание:
 // Загрузив приложение вы увидите ошибку под полем email, но вы еще ничего не ввели.
