@@ -1,50 +1,50 @@
-// import React from 'react';
-// import ReactDOM from 'react-dom/client';
-// import './index.css';
-// import reportWebVitals from './reportWebVitals';
-// import App from './app/App';
-// import {Provider} from 'react-redux';
-// import {store} from './app/store';
-// import {BrowserRouter, createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-// import {Login} from "./components/Login/Login";
-// import {TodolistsList} from "./features/TodolistsList/TodolistsList";
-// import {ErrorPage} from "./components/ErrorPage/ErrorPage";
-// const router = createBrowserRouter([
-//     {
-//         path: "/",
-//         element: <App/>,
-//         errorElement: <ErrorPage/>,
-//         children: [
-//             {
-//                 index: true,
-//                 element: <Navigate to="/todolists"/>
-//             },
-//             {
-//                 path: "/login",
-//                 element: <Login/>,
-//             },
-//             {
-//                 path: "/todolists",
-//                 element: <TodolistsList/>,
-//             },
-//         ],
-//     },
-// ]);
-// const root = ReactDOM.createRoot(
-//     document.getElementById('root') as HTMLElement
-// );
-//
-// root.render(
-//     <Provider store={store}>
-//         {/*<App/>*/}
-//         <RouterProvider router={router}/>
-//     </Provider>
-// );
-//
-// // If you want to start measuring performance in your app, pass a function
-// // to log results (for example: reportWebVitals(console.log))
-// // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import reportWebVitals from './reportWebVitals';
+import App from './app/App';
+import {Provider} from 'react-redux';
+import {store} from './app/store';
+import {BrowserRouter, createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+import {Login} from "./components/Login/Login";
+import {TodolistsList} from "./features/TodolistsList/TodolistsList";
+import {ErrorPage} from "./components/ErrorPage/ErrorPage";
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App/>,
+        errorElement: <ErrorPage/>,
+        children: [
+            {
+                index: true,
+                element: <Navigate to="/todolists"/>
+            },
+            {
+                path: "/login",
+                element: <Login/>,
+            },
+            {
+                path: "/todolists",
+                element: <TodolistsList/>,
+            },
+        ],
+    },
+]);
+const root = ReactDOM.createRoot(
+    document.getElementById('root') as HTMLElement
+);
+
+root.render(
+    <Provider store={store}>
+        {/*<App/>*/}
+        <RouterProvider router={router}/>
+    </Provider>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
 ///------------------
 // import React from 'react'
 // import ReactDOM from 'react-dom/client';
@@ -441,72 +441,72 @@
 // Ответ дайте через пробел.
 
 // 🖥 Пример ответа: 1 2 3 4 5 6 7 8 9 10 1 2 3
-import { useFormik } from 'formik';
-import React from 'react'
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-
-
-// Types
-type LoginFieldsType = {
-    firstName: string
-    email: string
-}
-
-// Main
-export const Login = () => {
-
-    const formik = useFormik({
-        initialValues: {
-            firstName: '',
-            email: '',
-        },
-        validate: (values) => {
-            const errors: Partial<LoginFieldsType> = {};
-
-            if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = 'Invalid email address';
-            }
-            return errors
-        },
-        onSubmit: values => {
-            alert(JSON.stringify(values, null, 2));
-        }
-    });
-
-    // Функция необходима для того, чтобы вебшторм не ругался на true в JSX
-    const getTrue = () => {
-        return true
-    }
-    if(formik.errors){
-        console.log(formik.errors)
-        console.log(formik.touched.email)
-    }
-    return (
-        <form onSubmit={formik.handleSubmit}>
-            <div>
-                <input placeholder={'Введите имя'} {...formik.getFieldProps('firstName')}/>
-            </div>
-            <div>
-                <input placeholder={'Введите email'}{...formik.getFieldProps('email')}/>
-                {getTrue() && formik.touched.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
-            </div>
-            <button type="submit">Отправить</button>
-        </form>
-    );
-}
-
-// App
-export const App = () => {
-    return (
-        <Routes>
-            <Route path={''} element={<Login/>}/>
-        </Routes>
-    )
-}
-
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
-root.render(<BrowserRouter><App/></BrowserRouter>)
+// import { useFormik } from 'formik';
+// import React from 'react'
+// import ReactDOM from 'react-dom/client';
+// import { BrowserRouter, Route, Routes } from 'react-router-dom'
+//
+//
+// // Types
+// type LoginFieldsType = {
+//     firstName: string
+//     email: string
+// }
+//
+// // Main
+// export const Login = () => {
+//
+//     const formik = useFormik({
+//         initialValues: {
+//             firstName: '',
+//             email: '',
+//         },
+//         validate: (values) => {
+//             const errors: Partial<LoginFieldsType> = {};
+//
+//             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+//                 errors.email = 'Invalid email address';
+//             }
+//             return errors
+//         },
+//         onSubmit: values => {
+//             alert(JSON.stringify(values, null, 2));
+//         }
+//     });
+//
+//     // Функция необходима для того, чтобы вебшторм не ругался на true в JSX
+//     const getTrue = () => {
+//         return true
+//     }
+//     if(formik.errors){
+//         console.log(formik.errors)
+//         console.log(formik.touched.email)
+//     }
+//     return (
+//         <form onSubmit={formik.handleSubmit}>
+//             <div>
+//                 <input placeholder={'Введите имя'} {...formik.getFieldProps('firstName')}/>
+//             </div>
+//             <div>
+//                 <input placeholder={'Введите email'}{...formik.getFieldProps('email')}/>
+//                 {getTrue() && formik.touched.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+//             </div>
+//             <button type="submit">Отправить</button>
+//         </form>
+//     );
+// }
+//
+// // App
+// export const App = () => {
+//     return (
+//         <Routes>
+//             <Route path={''} element={<Login/>}/>
+//         </Routes>
+//     )
+// }
+//
+// const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+// root.render(<BrowserRouter><App/></BrowserRouter>)
 
 // 📜 Описание:
 // Загрузив приложение вы увидите ошибку под полем email, но вы еще ничего не ввели.
@@ -518,7 +518,7 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 
 // 🖥 Пример ответа: {true && <div style={{color: 'red'}}>error.email</div>}
 //-----
-
+//
 // import { useFormik } from 'formik';
 // import React from 'react'
 // import ReactDOM from 'react-dom/client';
@@ -533,15 +533,13 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 //             password: '',
 //         },
 //         onSubmit: values => {
-//             console.log('sdvsdvd')
 //             alert(JSON.stringify(values, null, 2));
-//             formik.resetForm();
-//
+//            // formik.resetForm();
 //         },
 //     });
 //
 //     return (
-//         <form>
+//         <form onSubmit={formik.handleSubmit} >
 //             <div>
 //                 <input
 //                     name="email"
@@ -590,24 +588,35 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 // import ReactDOM from "react-dom/client";
 // import { BrowserRouter, Route, Routes } from "react-router-dom";
 // import { ThunkAction, ThunkDispatch } from "redux-thunk";
-// import axios from "axios";
 // import { configureStore, combineReducers } from "@reduxjs/toolkit";
+// import axios, { AxiosResponse } from 'axios'
+// import {GetTasksResponse} from "./api/todolists-api";
 //
-// // Utils
-// console.log = () => {};
-//
-// // Api
 // const instance = axios.create({
-//     baseURL: "xxx",
-// });
+//     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
+//     withCredentials: true,
+//     headers: {
+//         'API-KEY': 'a2bc24bd-0a71-4fa5-ad1c-5b343082cdb6'
+//     }
+// })
+// // Utils
+// //console.log = () => {};
 //
+//
+//
+// // const api = {
+// //     getUsers() {
+// //         /* 1 */
+// //         console.log(1)
+// //         return instance.get("xxx");
+// //     },
+// // };
 // const api = {
 //     getUsers() {
-//         /* 1 */
-//         return instance.get("xxx");
+//         console.log(1)
+//         return instance.get<GetTasksResponse>(`todo-lists/70530da6-46fa-4c86-9620-0698621c0cda/tasks`)
 //     },
 // };
-//
 // // Reducer
 // const initState = {
 //     isLoading: false,
@@ -620,6 +629,7 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 //     switch (action.type) {
 //         case "APP/SET-USERS":
 //             /* 2 */
+//             console.log(2)
 //             return { ...state, users: action.users };
 //         default:
 //             return state;
@@ -633,9 +643,11 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 // // Thunk
 // const getUsersTC = (): AppThunk => (dispatch) => {
 //     /* 3 */
+//     console.log(3)
 //     api.getUsers().then((res) => {
 //         /* 4 */
-//         dispatch(setUsersAC(res.data.data));
+//         console.log(4)
+//         dispatch(setUsersAC(res.data.items));
 //     });
 // };
 //
@@ -655,13 +667,16 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 // export const Login = () => {
 //     const users = useAppSelector((state) => state.app.users);
 //     /* 5 */
-//
+//     console.log(5)
+//     console.log(6)
 //     return (
 //         <div>
-//             {/* 6 */}
-//             {users.map((u) => (
+//             {/* 6 */ }
+//                        {
+//                            users.map((u) => (
 //                 <p key={u.id}>{u.email}</p>
 //             ))}
+//
 //             <h1>
 //                 В данном задании на экран смотреть не нужно. Рекомендуем взять ручку, листик и
 //                 последовательно, спокойно расставить цифры в нужном порядке. Прежде чем давать ответ
@@ -674,14 +689,17 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 // // App
 // export const App = () => {
 //     /* 7 */
+//     console.log(7)
 //     const dispatch = useAppDispatch();
 //
 //     useEffect(() => {
 //         /* 8 */
+//         console.log(8)
 //         dispatch(getUsersTC());
 //     }, []);
 //
 //     /* 9 */
+//     console.log(9)
 //     return (
 //         <Routes>
 //             <Route path={""} element={<Login />} />
@@ -724,10 +742,10 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 //             firstName: '',
 //         },
 //         validate: (values) => {
-//             if(values.firstName.length<=5){
-//                 errors:{'Must be 5 characters or more'}
-//             }
 //             const errors: LoginFieldsType = {};
+//             if(values.firstName.length<5){
+//                 errors.firstName='Must be 5 characters or more'
+//             }
 //             return errors
 //         },
 //         onSubmit: values => {
@@ -735,6 +753,7 @@ root.render(<BrowserRouter><App/></BrowserRouter>)
 //         }
 //     });
 //     console.log(formik.errors)
+//     //console.log(formik.dirty)
 //     return (
 //         <form onSubmit={formik.handleSubmit}>
 //             <div>
