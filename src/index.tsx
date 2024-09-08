@@ -1,50 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import App from './app/App';
-import {Provider} from 'react-redux';
-import {store} from './app/store';
-import {BrowserRouter, createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
-import {Login} from "./components/Login/Login";
-import {TodolistsList} from "./features/TodolistsList/TodolistsList";
-import {ErrorPage} from "./components/ErrorPage/ErrorPage";
-const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <App/>,
-        errorElement: <ErrorPage/>,
-        children: [
-            {
-                index: true,
-                element: <Navigate to="/todolists"/>
-            },
-            {
-                path: "/login",
-                element: <Login/>,
-            },
-            {
-                path: "/todolists",
-                element: <TodolistsList/>,
-            },
-        ],
-    },
-]);
-const root = ReactDOM.createRoot(
-    document.getElementById('root') as HTMLElement
-);
-
-root.render(
-    <Provider store={store}>
-        {/*<App/>*/}
-        <RouterProvider router={router}/>
-    </Provider>
-);
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+// import React from 'react';
+// import ReactDOM from 'react-dom/client';
+// import './index.css';
+// import reportWebVitals from './reportWebVitals';
+// import App from './app/App';
+// import {Provider} from 'react-redux';
+// import {store} from './app/store';
+// import {BrowserRouter, createBrowserRouter, Navigate, RouterProvider} from "react-router-dom";
+// import {Login} from "./components/Login/Login";
+// import {TodolistsList} from "./features/TodolistsList/TodolistsList";
+// import {ErrorPage} from "./components/ErrorPage/ErrorPage";
+// const router = createBrowserRouter([
+//     {
+//         path: "/",
+//         element: <App/>,
+//         errorElement: <ErrorPage/>,
+//         children: [
+//             {
+//                 index: true,
+//                 element: <Navigate to="/todolists"/>
+//             },
+//             {
+//                 path: "/login",
+//                 element: <Login/>,
+//             },
+//             {
+//                 path: "/todolists",
+//                 element: <TodolistsList/>,
+//             },
+//         ],
+//     },
+// ]);
+// const root = ReactDOM.createRoot(
+//     document.getElementById('root') as HTMLElement
+// );
+//
+// root.render(
+//     <Provider store={store}>
+//         {/*<App/>*/}
+//         <RouterProvider router={router}/>
+//     </Provider>
+// );
+//
+// // If you want to start measuring performance in your app, pass a function
+// // to log results (for example: reportWebVitals(console.log))
+// // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+// reportWebVitals();
 ///------------------
 // import React from 'react'
 // import ReactDOM from 'react-dom/client';
@@ -244,6 +244,19 @@ reportWebVitals();
 
 // Напишите строку кода, которую нужно добавить
 // 🖥 Пример ответа: if (true) { console.log('hello') }
+
+
+// 📜 Описание:
+// Начните вводить в поле firstName символы. После ввода первого символа кнопка "Отправить" раздизаблится.
+// Задача: кнопка "Отправить" должна раздизаблиться только в том случае, если длинна имени больше, либо равна 5 символам.
+// Т.е. вам необходимо самостоятельно написать эту валидацию для поля firstName.
+// ❗ В качестве текста ошибки напишите 'Must be 5 characters or more'
+// ❗ Текст ошибки выводить не нужно (только если для себя поиграться).
+
+// В качестве ответа напишите полностью строку кода с условием.
+// 🖥 Пример ответа: if (true) { errors.firstName = 'Must be 5 characters or more' }
+// ❗ Сторонние библиотеки (например yup) использовать запрещено
+
 //+++
 //------
 // import React from 'react'
@@ -489,7 +502,7 @@ reportWebVitals();
 //             </div>
 //             <div>
 //                 <input placeholder={'Введите email'}{...formik.getFieldProps('email')}/>
-//                 {getTrue() && formik.touched.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+//                 { && formik.touched.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
 //             </div>
 //             <button type="submit">Отправить</button>
 //         </form>
