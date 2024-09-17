@@ -45,7 +45,7 @@
 // // to log results (for example: reportWebVitals(console.log))
 // // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 // reportWebVitals();
-
+//
 // import axios from 'axios'
 // import React, { ChangeEvent, useEffect, useState } from 'react'
 // import ReactDOM from 'react-dom/client';
@@ -70,8 +70,8 @@
 //         const payload = {body: 'Это просто заглушка. Backend сам сгенерирует новый комментарий и вернет его вам'}
 //         // Promise.resolve() стоит в качестве заглушки, чтобы TS не ругался и код компилировался
 //         // Promise.resolve() нужно удалить и написать правильный запрос для создания нового комментария
-//         return instance.post<CommentType[]>('comments',payload)
-//         //return Promise.resolve()
+//         return instance.post('comments', {body:payload.body})
+//         //return Promise.resolve().
 //     }
 // }
 //
@@ -118,6 +118,8 @@
 //
 // const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 // root.render(<App/>)
+
+
 
 // 📜 Описание:
 // Напишите запрос на сервер для создания нового комментария.
@@ -218,8 +220,9 @@
 // const App = () => {
 //     const dispatch = useAppDispatch();
 //     const todos = useAppSelector((state) => state.todos);
+//     console.log(todos)
 //     useEffect(() => {
-//         getTodosTC();
+//         dispatch(getTodosTC());
 //     }, []);
 //
 //     const changeStatusHandler = (id: string, completed: boolean) => {
@@ -381,8 +384,8 @@
 // const getCommentsAC = (comments: CommentType[]) =>
 //     ({ type: "COMMENTS/GET-COMMENTS", comments }) as const;
 // type ActionsType = ReturnType<typeof getCommentsAC>;
-//
-// const getCommentsTC = (): ThunkAction<ReturnType<any>, RootState, unknown, ActionsType> => (dispatch) => {
+// //ReturnType<any>, RootState, unknown, ActionsType
+// const getCommentsTC = (): ThunkAction<ReturnType<any>,RootState, unknown, ActionsType> => (dispatch) => {
 //     commentsAPI.getComments().then((res) => {
 //         dispatch(getCommentsAC(res.data));
 //     });
@@ -506,7 +509,7 @@
 //                 })
 //                 .catch((e) => {
 //                     dispatch(setError(e.response.data.errors))
-//                     console.log(e.response.data)
+//                     console.log(e.response.data.errors)
 //                     console.log('e')
 //                 })
 //                 .finally(() => {
@@ -553,10 +556,9 @@
 //         e.preventDefault();
 //         dispatch(loginTC(form));
 //     };
-//
 //     return (
 //         <div>
-//             {!!error && <h2 style={{ color: "red" }}>{error}</h2>}
+//             {error && <h2 style={{ color: "red" }}>{error}</h2>}
 //             {isLoading && <Loader />}
 //             <form>
 //                 <div>
@@ -686,8 +688,9 @@
 //     api
 //         .getTodos()
 //         .then((res) => {
-//             console.log(res.data)
-//             dispatch(getTodosAC(res.data))
+//             // console.log(res.data)
+//             // dispatch(getTodosAC(res.data))
+//             baseSuccessHandler(dispatch,getTodosAC,res.data)
 //             // ❗❗❗ XXX ❗❗❗
 //         })
 //         .catch((e: AxiosError) => {
@@ -701,8 +704,8 @@
 //     api
 //         .getUsers()
 //         .then((res) => {
-//             console.log(res.data.items)
-//             dispatch(getUsersAC(res.data.items))
+//             //console.log(res.data.items)
+//             baseSuccessHandler(dispatch,getUsersAC,res.data.items)
 //             // ❗❗❗ YYY ❗❗❗
 //         })
 //         .catch((e: AxiosError) => {
@@ -1179,6 +1182,94 @@
 //         </BrowserRouter>
 //     </Provider>,
 // );
+// import { useFormik } from 'formik';
+// import React from 'react'
+// import ReactDOM from 'react-dom/client';
+// import { BrowserRouter, Route, Routes } from 'react-router-dom'
+//
+//
+// // Main
+// export const Login = () => {
+//
+//     const formik = useFormik({
+//         initialValues: {
+//             firstName: '',
+//             lastName: '',
+//             email: '',
+//             password: '',
+//             phone: '',
+//         },
+//         onSubmit: values => {
+//             alert(JSON.stringify(values, null, 2));
+//         },
+//     });
+//
+//     return (
+//         <form onSubmit={formik.handleSubmit}>
+//             <div>
+//                 <input
+//                     name="firstName"
+//                     onChange={formik.handleChange}
+//                     value={formik.values.firstName}
+//                     placeholder={'Введите имя'}
+//                 />
+//             </div>
+//             <div>
+//                 <input
+//                     name="lastName"
+//                     onChange={formik.handleChange}
+//                     value={formik.values.lastName}
+//                     placeholder={'Введите фамилию'}
+//                 />
+//             </div>
+//             <div>
+//                 <input
+//                     name="email"
+//                     onChange={formik.handleChange}
+//                     value={formik.values.email}
+//                     placeholder={'Введите email'}
+//                 />
+//             </div>
+//             <div>
+//                 <input
+//                     name="password"
+//                     onChange={formik.handleChange}
+//                     value={formik.values.password}
+//                     placeholder={'Введите пароль'}
+//                     type={'password'}
+//                 />
+//             </div>
+//             <div>
+//                 <input
+//                     name="password"
+//                     onChange={formik.handleChange}
+//                     value={formik.values.phone}
+//                     placeholder={'Введите телефон'}
+//                 />
+//             </div>
+//             <button type="submit">Отправить</button>
+//         </form>
+//     );
+// }
+//
+// // App
+// export const App = () => {
+//     return (
+//         <Routes>
+//             <Route path={''} element={<Login/>}/>
+//         </Routes>
+//     )
+// }
+//
+// const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+// root.render(<BrowserRouter><App/></BrowserRouter>)
+
+// 📜 Описание:
+// Форма заполнения данных работает некорректно.
+// Пользователи жалуются на поле ввода "Телефона"
+// Найдите в коде ошибку. Исправленную версию строки напишите в качестве ответа.
+
+// 🖥 Пример ответа: <form onSubmit={formik.handleSubmit}>
 
 // 📜 Описание:
 // ❗ Email и password менять не надо. Это просто тестовые данные с которыми будет происходить успешный запрос.
@@ -1397,6 +1488,53 @@
 // Ответ дайте через пробел.
 
 // 🖥 Пример ответа: 1 2 3 4 5 6 7 8 9 10 1 2 3
+
+//
+// import React from 'react'
+// import ReactDOM from 'react-dom/client';
+// import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+//
+//
+// export const PageNotFound = () => {
+//     return <h2>⛔ 404. Page not found ⛔</h2>
+// }
+//
+// export const Profile = () => {
+//     return <h2>😎 Профиль</h2>
+// }
+//
+//
+// export const Main = () => {
+//     return (
+//         <>
+//             <h2>✅ Список тудулистов</h2>
+//             <h2>📜 Список постов</h2>
+//         </>
+//     )
+// }
+//
+// // App
+// export const App = () => {
+//
+//     return (
+//         <Routes>
+//             <Route path={'profile'} element={<Profile/>}/>
+//             <Route path={'*'} element={<Navigate to={'profile'}/>}/>
+//             {/* ❗❗❗ XXX ❗❗❗  */}
+//         </Routes>
+//     )
+// }
+//
+//
+// const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+// root.render(<BrowserRouter><App/></BrowserRouter>)
+
+// 📜 Описание:
+// Вместо ХХХ напишите роут таким образом, чтобы вне зависимости от того чтобы будет в урле (login или home или...)
+// вас всегда редиректило на страницу профиля и при в это в урле по итогу
+// был адрес /profile
+
+// 🖥 Пример ответа: <Route path={'/'} element={'to profile page'}/>
 // import { useFormik } from 'formik';
 // import React from 'react'
 // import ReactDOM from 'react-dom/client';
@@ -1435,9 +1573,10 @@
 //         return true
 //     }
 //     if(formik.errors){
-//         console.log(formik.errors)
-//         console.log(formik.touched.email)
+//         //console.log(formik.errors)
+//        // console.log(formik.touched)
 //     }
+//     console.log(formik.touched)
 //     return (
 //         <form onSubmit={formik.handleSubmit}>
 //             <div>
@@ -1445,7 +1584,7 @@
 //             </div>
 //             <div>
 //                 <input placeholder={'Введите email'}{...formik.getFieldProps('email')}/>
-//                 { && formik.touched.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
+//                 {  formik.touched.email && formik.errors.email  && <div style={{color: 'red'}}>{formik.errors.email}</div>}
 //             </div>
 //             <button type="submit">Отправить</button>
 //         </form>
@@ -1539,6 +1678,15 @@
 
 // 🖥 Пример ответа: <div onClick={handleClick}>
 ///-----
+
+
+// 📜 Описание:
+// При заполнении данных формы и их отправке вы должны увидеть alert c
+// введенными значениями, но из-за допущенной ошибки форма работает не корректно.
+// Найдите ошибку и исправленную версию строки напишите в качестве ответа.
+// ❗После того как показался alert форма не должна перегружать все приложение
+
+// 🖥 Пример ответа: <div onClick={handleClick}>
 // import React, { useEffect } from "react";
 // import { Provider, TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 // import ReactDOM from "react-dom/client";
@@ -1715,7 +1863,7 @@
 //             <div>
 //                 <input placeholder={'Введите имя'} {...formik.getFieldProps('firstName')}/>
 //             </div>
-//             <button type="submit" disabled={!(formik.isValid && formik.dirty && formik.values.firstName.length>=5)}>Отправить</button>
+//             <button type="submit" disabled={!(formik.isValid && formik.dirty)}>Отправить</button>
 //         </form>
 //     );
 // }
@@ -1743,3 +1891,138 @@
 // 🖥 Пример ответа: if (true) { errors.firstName = 'Must be 5 characters or more' }
 // ❗ Сторонние библиотеки (например yup) использовать запрещено
 ////----
+// import React, { useEffect } from "react";
+// import ReactDOM from "react-dom/client";
+// import { ThunkAction, ThunkDispatch } from "redux-thunk";
+// import { Provider, TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+// import axios from "axios";
+// import { configureStore, combineReducers } from "@reduxjs/toolkit";
+//
+// // Types
+// type PostType = {
+//     body: string;
+//     id: string;
+//     title: string;
+//     userId: string;
+// };
+//
+// type PayloadType = {
+//     title: string;
+//     body?: string;
+// };
+//
+// // Api
+// const instance = axios.create({ baseURL: "https://exams-frontend.kimitsu.it-incubator.io/api/" });
+//
+// const postsAPI = {
+//     getPosts() {
+//         return instance.get<PostType[]>("posts");
+//     },
+//     updatePostTitle(postId: string, post: PayloadType) {
+//         return instance.put<PostType>(`posts/${postId}`, post);
+//     },
+// };
+//
+// // Reducer
+// const initState = [] as PostType[];
+//
+// type InitStateType = typeof initState;
+//
+// const postsReducer = (state: InitStateType = initState, action: ActionsType): InitStateType => {
+//     switch (action.type) {
+//         case "POSTS/GET-POSTS":
+//             return action.posts;
+//
+//         case "POSTS/UPDATE-POST-TITLE":
+//             return state.map((p) => {
+//                 if (p.id === action.post.id) {
+//                     return { ...p, title: action.post.title };
+//                 } else {
+//                     return p;
+//                 }
+//             });
+//
+//         default:
+//             return state;
+//     }
+// };
+//
+// const getPostsAC = (posts: PostType[]) => ({ type: "POSTS/GET-POSTS", posts }) as const;
+// const updatePostTitleAC = (post: PostType) => ({ type: "POSTS/UPDATE-POST-TITLE", post }) as const;
+// type ActionsType = ReturnType<typeof getPostsAC> | ReturnType<typeof updatePostTitleAC>;
+//
+// const getPostsTC = (): AppThunk => (dispatch) => {
+//     postsAPI.getPosts().then((res) => {
+//         dispatch(getPostsAC(res.data));
+//     });
+// };
+//
+// const updatePostTC =
+//     (postId: string): AppThunk =>
+//         (dispatch, getState: any) => {
+//             try {
+//                 const currentPost = getState().posts.find((p: PostType) => p.id === postId);
+//                 if (currentPost) {
+//                     const payload = { title: "Это просто заглушка. Backend сам сгенерирует новый title" };
+//                     postsAPI.updatePostTitle(postId, payload).then((res) => {
+//                         dispatch(updatePostTitleAC(res.data));
+//                     });
+//                 }
+//             } catch (e) {
+//                 alert("Обновить пост не удалось 😢");
+//             }
+//         };
+//
+// // Store
+// const rootReducer = combineReducers({
+//     posts: postsReducer,
+// });
+//
+// const store = configureStore({ reducer: rootReducer });
+// type RootState = ReturnType<typeof store.getState>;
+// type AppDispatch = ThunkDispatch<RootState, unknown, ActionsType>;
+// type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, ActionsType>;
+// const useAppDispatch = () => useDispatch<AppDispatch>();
+// const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+//
+// // App
+// const App = () => {
+//     const dispatch = useAppDispatch();
+//     const posts = useAppSelector((state) => state.posts);
+//
+//     useEffect(() => {
+//         dispatch(getPostsTC());
+//     }, []);
+//
+//     const updatePostHandler = (postId: string) => {
+//         dispatch(updatePostTC(postId));
+//     };
+//
+//     return (
+//         <>
+//             <h1>📜 Список постов</h1>
+//             {posts.map((p) => {
+//                 return (
+//                     <div key={p.id}>
+//                         <b>title</b>: {p.title}
+//                         <button onClick={() => updatePostHandler(p.id)}>Обновить пост</button>
+//                     </div>
+//                 );
+//             })}
+//         </>
+//     );
+// };
+//
+// const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
+// root.render(
+//     <Provider store={store}>
+//         <App />
+//     </Provider>,
+// );
+
+// 📜 Описание:
+// Попробуйте обновить пост и вы увидите alert с ошибкой.
+// Debugger / network / console.log вам в помощь
+// Найдите ошибку и вставьте исправленную строку кода в качестве ответа.
+
+// 🖥 Пример ответа: const payload = {...currentPost, tile: 'Летим 🚀'}
